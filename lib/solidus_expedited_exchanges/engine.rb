@@ -15,6 +15,7 @@ module SolidusExpeditedExchanges
 
     def self.activate
       Spree::Order.prepend SolidusExpeditedExchanges::OrderExtension
+      Spree::ReturnAuthorization.include SolidusExpeditedExchanges::ReturnAuthorizationExtension
       Spree::AppConfiguration.include SolidusExpeditedExchanges::AppConfigurationExtension
     end
 
