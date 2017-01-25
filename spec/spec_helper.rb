@@ -18,6 +18,7 @@ require File.expand_path('../dummy/config/environment.rb', __FILE__)
 require 'rspec/rails'
 require 'database_cleaner'
 require 'ffaker'
+require 'timecop'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -32,6 +33,8 @@ require 'spree/testing_support/url_helpers'
 
 # Requires factories defined in lib/solidus_expedited_exchanges/factories.rb
 require 'solidus_expedited_exchanges/factories'
+
+ActiveJob::Base.queue_adapter = :inline
 
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
@@ -75,6 +78,7 @@ RSpec.configure do |config|
   config.before :each do
     DatabaseCleaner.strategy = RSpec.current_example.metadata[:js] ? :truncation : :transaction
     DatabaseCleaner.start
+    Spree::Config.reset
   end
 
   # After each spec clean the database.
