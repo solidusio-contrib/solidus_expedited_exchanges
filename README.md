@@ -1,9 +1,10 @@
+
+> This extension should work, but is mostly unmaintained. If you rely on this extension's functionality and are interested in maintaining it please get in contact via [Slack](solidusio.slack.com) ([request an invite](http://slack.solidus.io/)).
+
 SolidusExpeditedExchanges
 ==========================
 
 Expedited shipping provides a "cross shipping" feature for returns. It was extracted from Solidus for version 2.2.
-
-This extension should work, but is mostly unmaintained. If you rely on this extension's functionality and are interested in maintaining it please get in contact via [Slack](solidusio.slack.com) ([request an invite](http://slack.solidus.io/)).
 
 Installation
 ------------
