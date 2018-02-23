@@ -20,7 +20,7 @@ namespace :exchanges do
         item_charger.charge_for_items
       rescue SolidusExpeditedExchanges::UnreturnedItemCharger::ChargeFailure => e
         failure = { message: e.message }
-      rescue => e
+      rescue StandardError => e
         failure = { message: "#{e.class}: #{e.message}" }
       end
 
