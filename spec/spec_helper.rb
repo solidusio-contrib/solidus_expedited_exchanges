@@ -31,13 +31,10 @@ require 'spree/testing_support/controller_requests'
 require 'spree/testing_support/factories'
 require 'spree/testing_support/url_helpers'
 
-# Requires factories defined in lib/solidus_expedited_exchanges/factories.rb
-require 'solidus_expedited_exchanges/factories'
-
 ActiveJob::Base.queue_adapter = :inline
 
 RSpec.configure do |config|
-  config.include FactoryGirl::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
 
   # Infer an example group's spec type from the file location.
   config.infer_spec_type_from_file_location!

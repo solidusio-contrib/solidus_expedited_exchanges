@@ -34,11 +34,4 @@ bundle
 bundle exec rake
 ```
 
-When testing your applications integration with this extension you may use it's factories.
-Simply add this require statement to your spec_helper:
-
-```ruby
-require 'solidus_expedited_exchanges/factories'
-```
-
 Copyright (c) 2017 [name of extension creator], released under the New BSD License
