@@ -9,7 +9,7 @@ namespace :exchanges do
 
     # Determine that a return item has already been deemed unreturned and therefore charged
     # by the fact that its exchange inventory unit has popped off to a different order
-    unreturned_return_items.select! { |ri| ri.inventory_unit.order_id == ri.exchange_inventory_unit.order_id }
+    unreturned_return_items.select! { |ri| ri.inventory_unit.order.id == ri.exchange_inventory_unit.order.id }
 
     failures = []
 

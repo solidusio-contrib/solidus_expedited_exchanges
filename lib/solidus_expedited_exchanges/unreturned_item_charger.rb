@@ -62,7 +62,17 @@ module SolidusExpeditedExchanges
       @return_items.group_by(&:exchange_variant).map do |variant, variant_return_items|
         variant_inventory_units = variant_return_items.map(&:exchange_inventory_unit)
         line_item = Spree::LineItem.create!(variant: variant, quantity: variant_return_items.count, order: new_order)
-        variant_inventory_units.each { |i| i.update_attributes!(line_item_id: line_item.id, order_id: new_order.id) }
+        variant_inventory_units.each do |i|
+          new_inventory_unit_attributes = { line_item_id: line_item.id }
+          # This is needed for solidus versions < 2.5, where order_id is
+          # saved on the inventory unit directly. On newer version it's
+          # useless since the order id is taken from the shipment.
+          if i.attributes.include? 'order_id'
+            new_inventory_unit_attributes[:order_id] = new_order.id
+          end
+
+          i.update_attributes!(new_inventory_unit_attributes)
+        end
       end
     end
 
