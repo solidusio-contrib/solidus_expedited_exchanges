@@ -1,7 +1,8 @@
-sudo: false
+dist: trusty
+cache: bundler
 language: ruby
 rvm:
-  - 2.3.1
+  - 2.5.1
 env:
   matrix:
     - SOLIDUS_BRANCH=v2.3 DB=postgres
