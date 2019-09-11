@@ -1,10 +1,9 @@
-
 > This extension should work, but is mostly unmaintained. If you rely on this extension's functionality and are interested in maintaining it please get in contact via [Slack](solidusio.slack.com) ([request an invite](http://slack.solidus.io/)).
 
 SolidusExpeditedExchanges
 ==========================
 
-[![Build Status](https://travis-ci.org/solidusio-contrib/solidus_expedited_exchanges.svg?branch=master)](https://travis-ci.org/solidusio-contrib/solidus_expedited_exchanges)
+[![CircleCI](https://circleci.com/gh/solidusio-contrib/solidus_expedited_exchanges.svg?style=svg)](https://circleci.com/gh/solidusio-contrib/solidus_expedited_exchanges)
 
 Expedited shipping provides a "cross shipping" feature for returns. It was extracted from Solidus for version 2.2.
 
