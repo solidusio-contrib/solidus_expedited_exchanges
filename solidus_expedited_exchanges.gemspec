@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'ffaker'
   s.add_development_dependency 'poltergeist'
   s.add_development_dependency 'rspec-rails'
-  s.add_development_dependency 'rubocop', '0.52.1'
+  s.add_development_dependency 'rubocop', '0.75.1'
   s.add_development_dependency 'rubocop-rspec', '~> 1.10'
   s.add_development_dependency 'sass-rails'
   s.add_development_dependency 'simplecov'
