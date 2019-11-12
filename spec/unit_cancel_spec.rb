@@ -22,7 +22,7 @@ describe Spree::UnitCancel do
       end
 
       before do
-        Spree::Config[:expedited_exchanges] = true
+        stub_spree_preferences(expedited_exchanges: true)
       end
 
       # This sets up an order with one shipped inventory unit, one unshipped

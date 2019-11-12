@@ -83,7 +83,7 @@ describe SolidusExpeditedExchanges::UnreturnedItemCharger do
     end
 
     context 'with auto_capture_exchanges' do
-      before { Spree::Config[:auto_capture_exchanges] = true }
+      before { stub_spree_preferences(auto_capture_exchanges: true) }
 
       it "captures payment" do
         expect { subject }.to change { Spree::Payment.count }.by(1)

@@ -27,7 +27,7 @@ describe "exchanges:charge_unreturned_items" do
   end
 
   before do
-    Spree::Config[:expedited_exchanges] = true
+    stub_spree_preferences(expedited_exchanges: true)
     Spree::StockItem.update_all(count_on_hand: 10)
   end
 
@@ -141,7 +141,7 @@ describe "exchanges:charge_unreturned_items" do
 
         context "auto_capture_exchanges is true" do
           before do
-            Spree::Config[:auto_capture_exchanges] = true
+            stub_spree_preferences(auto_capture_exchanges: true)
           end
 
           it 'creates a pending payment' do
@@ -153,7 +153,7 @@ describe "exchanges:charge_unreturned_items" do
 
         context "auto_capture_exchanges is false" do
           before do
-            Spree::Config[:auto_capture_exchanges] = false
+            stub_spree_preferences(auto_capture_exchanges: false)
           end
 
           it 'captures payment' do
@@ -221,7 +221,7 @@ describe "exchanges:charge_unreturned_items" do
 
       context 'rma for unreturned exchanges' do
         context 'config to not create' do
-          before { Spree::Config[:create_rma_for_unreturned_exchange] = false }
+          before { stub_spree_preferences(create_rma_for_unreturned_exchange: false) }
 
           it 'does not create rma' do
             expect { subject.invoke }.not_to change { Spree::ReturnAuthorization.count }
@@ -230,7 +230,7 @@ describe "exchanges:charge_unreturned_items" do
 
         context 'config to create' do
           before do
-            Spree::Config[:create_rma_for_unreturned_exchange] = true
+            stub_spree_preferences(create_rma_for_unreturned_exchange: true)
           end
 
           it 'creates with return items' do
