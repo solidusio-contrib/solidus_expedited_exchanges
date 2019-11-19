@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 branch = ENV.fetch('SOLIDUS_BRANCH', 'master')
 gem 'solidus', github: 'solidusio/solidus', branch: branch
-gem 'solidus_auth_devise', '~> 1.0'
+gem 'solidus_auth_devise', '~> 2.4'
 
 if branch == 'master' || branch >= "v2.3"
   gem 'rails', '~> 5.1.0'
