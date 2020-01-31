@@ -21,9 +21,7 @@ describe Spree::UnitCancel do
         create(:variant, product: variant.product, price: 10, track_inventory: false)
       end
 
-      before do
-        Spree::Config[:expedited_exchanges] = true
-      end
+      before { stub_spree_preferences(Spree::Config, expedited_exchanges: true) }
 
       # This sets up an order with one shipped inventory unit, one unshipped
       # inventory unit, and one unshipped exchange inventory unit.

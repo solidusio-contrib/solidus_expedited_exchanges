@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SolidusExpeditedExchanges
   module Generators
     class InstallGenerator < Rails::Generators::Base
@@ -9,8 +11,8 @@ module SolidusExpeditedExchanges
       end
 
       def add_stylesheets
-        inject_into_file 'vendor/assets/stylesheets/spree/frontend/all.css', " *= require spree/frontend/solidus_expedited_exchanges\n", before: /\*\//, verbose: true
-        inject_into_file 'vendor/assets/stylesheets/spree/backend/all.css', " *= require spree/backend/solidus_expedited_exchanges\n", before: /\*\//, verbose: true
+        inject_into_file 'vendor/assets/stylesheets/spree/frontend/all.css', " *= require spree/frontend/solidus_expedited_exchanges\n", before: %r{\*/}, verbose: true
+        inject_into_file 'vendor/assets/stylesheets/spree/backend/all.css', " *= require spree/backend/solidus_expedited_exchanges\n", before: %r{\*/}, verbose: true
       end
 
       def add_migrations
@@ -22,7 +24,7 @@ module SolidusExpeditedExchanges
         if run_migrations
           run 'bundle exec rake db:migrate'
         else
-          puts 'Skipping rake db:migrate, don\'t forget to run it!'
+          puts 'Skipping rake db:migrate, don\'t forget to run it!' # rubocop:disable Rails/Output
         end
       end
     end

@@ -23,7 +23,7 @@ describe Spree::ReturnAuthorization, type: :model do
       subject                    { create(:return_authorization, order: order, return_items: [exchange_return_item, return_item]) }
 
       before do
-        Spree::Config[:expedited_exchanges] = true
+        stub_spree_preferences(Spree::Config, expedited_exchanges: true)
         @pre_exchange_hooks = subject.class.pre_expedited_exchange_hooks
       end
 
