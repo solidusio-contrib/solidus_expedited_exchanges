@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
+require 'spree/core'
+
 module SolidusExpeditedExchanges
   class Engine < Rails::Engine
-    require 'spree/core'
-    isolate_namespace Spree
-    engine_name 'solidus_expedited_exchanges'
+    include SolidusSupport::EngineExtensions::Decorators
 
-    rake_tasks do
-      load File.join(root, "lib", "tasks", "exchanges.rake")
-    end
+    isolate_namespace ::Spree
+
+    engine_name 'solidus_expedited_exchanges'
 
     # use rspec for tests
     config.generators do |g|

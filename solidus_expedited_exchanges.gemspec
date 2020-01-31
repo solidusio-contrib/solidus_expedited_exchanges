@@ -1,33 +1,37 @@
-$:.push File.expand_path('../lib', __FILE__)
+# frozen_string_literal: true
+
+$:.push File.expand_path('lib', __dir__)
 require 'solidus_expedited_exchanges/version'
 
 Gem::Specification.new do |s|
-  s.name        = 'solidus_expedited_exchanges'
-  s.version     = SolidusExpeditedExchanges::VERSION
-  s.summary     = 'unreturned exchanges extracted from solidus_core'
-  s.description = 'unreturned exchanges extracted from solidus_core'
-  s.license     = 'BSD-3-Clause'
+  s.name = 'solidus_expedited_exchanges'
+  s.version = SolidusExpeditedExchanges::VERSION
+  s.summary = 'Unreturned exchanges extracted from solidus_core'
+  s.description = s.summary
+  s.license = 'BSD-3-Clause'
 
-  s.author    = 'Solidus Developers'
-  s.email     = 'contact@solidus.io'
-  s.homepage  = 'https://solidus.io/'
+  s.author = 'Solidus'
+  s.email = 'contact@solidus.io'
+  s.homepage = 'https://github.com/solidusio-contrib/solidus_expedited_exchanges'
 
-  s.files = Dir["{app,config,db,lib}/**/*", 'LICENSE', 'Rakefile', 'README.md']
-  s.test_files = Dir['test/**/*']
+  if s.respond_to?(:metadata)
+    s.metadata["homepage_uri"] = s.homepage if s.homepage
+    s.metadata["source_code_uri"] = s.homepage if s.homepage
+  end
 
-  s.add_dependency 'solidus_core', ['>= 2.2.0.alpha', '< 3']
+  s.required_ruby_version = '~> 2.4'
 
-  s.add_development_dependency 'capybara'
-  s.add_development_dependency 'coffee-rails'
-  s.add_development_dependency 'database_cleaner'
-  s.add_development_dependency 'factory_bot'
-  s.add_development_dependency 'ffaker'
-  s.add_development_dependency 'poltergeist'
-  s.add_development_dependency 'rspec-rails'
-  s.add_development_dependency 'rubocop', '0.52.1'
-  s.add_development_dependency 'rubocop-rspec', '~> 1.10'
-  s.add_development_dependency 'sass-rails'
-  s.add_development_dependency 'simplecov'
-  s.add_development_dependency 'sqlite3'
+  s.files = Dir.chdir(File.expand_path(__dir__)) do
+    `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
+  end
+  s.test_files = Dir['spec/**/*']
+  s.bindir = "exe"
+  s.executables = s.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  s.require_paths = ["lib"]
+
+  s.add_dependency 'solidus_core', ['>= 2.0.0', '< 3']
+  s.add_dependency 'solidus_support', '~> 0.4.0'
+
+  s.add_development_dependency 'solidus_dev_support'
   s.add_development_dependency 'timecop'
 end
