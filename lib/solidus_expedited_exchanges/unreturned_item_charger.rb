@@ -71,13 +71,13 @@ module SolidusExpeditedExchanges
             new_inventory_unit_attributes[:order_id] = new_order.id
           end
 
-          i.update_attributes!(new_inventory_unit_attributes)
+          i.update!(new_inventory_unit_attributes)
         end
       end
     end
 
     def set_shipment_for_new_order
-      @shipment.update_attributes!(order_id: new_order.id)
+      @shipment.update!(order_id: new_order.id)
       new_order.shipments.reset
     end
 

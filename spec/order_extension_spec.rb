@@ -43,7 +43,7 @@ describe Spree::Order, type: :model do
 
     context "shipment created before order" do
       before do
-        order.shipments.first.update_attributes!(created_at: order.created_at - 1.day)
+        order.shipments.first.update!(created_at: order.created_at - 1.day)
       end
 
       it { is_expected.to be true }
@@ -55,7 +55,7 @@ describe Spree::Order, type: :model do
     subject { described_class.unreturned_exchange }
 
     it 'includes orders that have a shipment created prior to the order' do
-      order.shipments.first.update_attributes!(created_at: order.created_at - 1.day)
+      order.shipments.first.update!(created_at: order.created_at - 1.day)
       expect(subject).to include order
     end
 

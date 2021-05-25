@@ -98,7 +98,7 @@ describe SolidusExpeditedExchanges::UnreturnedItemCharger do
 
   describe "#charge_for_items" do
     before do
-      original_variant.update_attributes!(track_inventory: true)
+      original_variant.update!(track_inventory: true)
       original_variant.stock_items.update_all(backorderable: false)
     end
 
@@ -106,7 +106,7 @@ describe SolidusExpeditedExchanges::UnreturnedItemCharger do
 
     context "new order is not an unreturned exchange" do
       before do
-        allow_any_instance_of(Spree::Shipment).to receive(:update_attributes!)
+        allow_any_instance_of(Spree::Shipment).to receive(:update!)
       end
 
       it "raises an error" do
