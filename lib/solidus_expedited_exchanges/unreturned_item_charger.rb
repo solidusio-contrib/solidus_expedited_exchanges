@@ -85,7 +85,7 @@ module SolidusExpeditedExchanges
     def set_order_payment
       unless new_order.payments.present?
         card_to_reuse = @original_order.valid_credit_cards.first
-        card_to_reuse = @original_order.user.credit_cards.default.first if !card_to_reuse && @original_order.user
+        card_to_reuse ||= @original_order.user.wallet.default_wallet_payment_source.payment_source if @original_order.user
         new_order.payments.create!(
           payment_method_id: card_to_reuse.try(:payment_method_id),
           source: card_to_reuse,
