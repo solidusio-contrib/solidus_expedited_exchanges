@@ -26,7 +26,7 @@ module SolidusExpeditedExchanges
       add_exchange_variants_to_order
       set_shipment_for_new_order
 
-      new_order.update!
+      new_order.recalculate
       set_order_payment
 
       # There are several checks in the order state machine to skip

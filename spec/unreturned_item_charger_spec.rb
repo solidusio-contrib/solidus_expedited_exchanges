@@ -57,7 +57,7 @@ describe SolidusExpeditedExchanges::UnreturnedItemCharger do
 
       it "applies tax" do
         exchange_order = exchange_shipment.order
-        exchange_order.update!
+        exchange_order.recalculate
         subject
         expect(new_order.additional_tax_total).to be > 0
         expect(new_order.line_items[0].additional_tax_total).to be > 0
