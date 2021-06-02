@@ -25,7 +25,7 @@ module SolidusExpeditedExchanges
       reimbursement = Spree::Reimbursement.new(return_items: items_to_exchange, order: order)
 
       if reimbursement.save
-        reimbursement.perform!
+        reimbursement.perform!(created_by: order.created_by)
       else
         errors.add(:base, reimbursement.errors.full_messages)
         raise ActiveRecord::RecordInvalid.new(self)

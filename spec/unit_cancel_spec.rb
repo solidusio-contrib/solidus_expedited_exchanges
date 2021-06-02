@@ -11,7 +11,7 @@ describe Spree::UnitCancel do
     let!(:inventory_unit2) { create(:inventory_unit, line_item: inventory_unit.line_item) }
 
     context "when exchanges are present" do
-      let!(:order) { create(:order, ship_address: create(:address)) }
+      let!(:order) { create(:order, ship_address: create(:address), created_by: create(:admin_user)) }
       let!(:product) { create(:product, price: 10.00) }
       let!(:variant) do
         create(:variant, price: 10, product: product, track_inventory: false)

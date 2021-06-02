@@ -36,7 +36,7 @@ describe "exchanges:charge_unreturned_items" do
   end
 
   context "there are return items in an intermediate return status" do
-    let!(:order) { create(:shipped_order, line_items_count: 2) }
+    let!(:order) { create(:shipped_order, line_items_count: 2, created_by: create(:admin_user)) }
     let(:return_item_1) { build(:exchange_return_item, inventory_unit: order.inventory_units.first) }
     let(:return_item_2) { build(:exchange_return_item, inventory_unit: order.inventory_units.last) }
     let!(:rma) { create(:return_authorization, order: order, return_items: [return_item_1, return_item_2]) }
@@ -61,7 +61,7 @@ describe "exchanges:charge_unreturned_items" do
   end
 
   context "there are unreturned items" do
-    let!(:order) { create(:shipped_order, line_items_count: 2) }
+    let!(:order) { create(:shipped_order, line_items_count: 2, created_by: create(:admin_user)) }
     let(:return_item_1) { build(:exchange_return_item, inventory_unit: order.inventory_units.first) }
     let(:return_item_2) { build(:exchange_return_item, inventory_unit: order.inventory_units.last) }
     let!(:rma) { create(:return_authorization, order: order, return_items: [return_item_1, return_item_2]) }

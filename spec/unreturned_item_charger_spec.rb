@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe SolidusExpeditedExchanges::UnreturnedItemCharger do
   let(:ship_address) { create(:address) }
-  let(:shipped_order) { create(:shipped_order, ship_address: ship_address, line_items_count: 1, with_cartons: false) }
+  let(:shipped_order) { create(:shipped_order, ship_address: ship_address, line_items_count: 1, with_cartons: false, created_by: create(:admin_user)) }
   let(:original_shipment) { shipped_order.shipments.first }
   let(:original_stock_location) { original_shipment.stock_location }
   let(:original_inventory_unit) { shipped_order.inventory_units.first }

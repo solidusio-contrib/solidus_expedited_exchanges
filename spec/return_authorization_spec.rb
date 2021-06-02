@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe Spree::ReturnAuthorization, type: :model do
-  let(:order) { create(:shipped_order) }
+  let(:admin) { create(:admin_user) }
+  let(:order) { create(:shipped_order, created_by: admin) }
   let(:stock_location) { create(:stock_location) }
   let(:rma_reason) { create(:return_reason) }
   let(:inventory_unit_1) { order.inventory_units.first }
@@ -17,7 +18,7 @@ describe Spree::ReturnAuthorization, type: :model do
     let(:order) { Spree::Order.create }
 
     context "expedited exchanges are configured" do
-      let(:order)                { create(:shipped_order, line_items_count: 2) }
+      let(:order)                { create(:shipped_order, line_items_count: 2, created_by: admin) }
       let(:exchange_return_item) { build(:exchange_return_item, inventory_unit: order.inventory_units.first) }
       let(:return_item)          { build(:return_item, inventory_unit: order.inventory_units.last) }
       subject                    { create(:return_authorization, order: order, return_items: [exchange_return_item, return_item]) }
