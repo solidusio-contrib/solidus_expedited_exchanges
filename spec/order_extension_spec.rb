@@ -3,10 +3,10 @@ require 'spec_helper'
 describe Spree::Order, type: :model do
   let(:store) { build_stubbed(:store) }
   let(:user) { stub_model(Spree::LegacyUser, email: "spree@example.com") }
-  let(:order) { stub_model(Spree::Order, user: user, store: store) }
+  let(:order) { stub_model(Spree::Order, user: user, store: store, created_by: create(:user)) }
 
   describe "#create_proposed_shipments" do
-    subject(:order) { create(:order) }
+    subject(:order) { create(:order, created_by: create(:user)) }
     context "unreturned exchange" do
       let!(:first_shipment) do
         create(:shipment, order: subject, state: first_shipment_state, created_at: 5.days.ago)
@@ -28,7 +28,7 @@ describe Spree::Order, type: :model do
   end
 
   describe "#unreturned_exchange?" do
-    let(:order) { create(:order_with_line_items) }
+    let(:order) { create(:order_with_line_items, created_by: create(:user)) }
     subject { order.reload.unreturned_exchange? }
 
     context "the order does not have a shipment" do
@@ -43,7 +43,7 @@ describe Spree::Order, type: :model do
 
     context "shipment created before order" do
       before do
-        order.shipments.first.update_attributes!(created_at: order.created_at - 1.day)
+        order.shipments.first.update!(created_at: order.created_at - 1.day)
       end
 
       it { is_expected.to be true }
@@ -51,11 +51,11 @@ describe Spree::Order, type: :model do
   end
 
   describe '.unreturned_exchange' do
-    let(:order) { create(:order_with_line_items) }
+    let(:order) { create(:order_with_line_items, created_by: create(:user)) }
     subject { described_class.unreturned_exchange }
 
     it 'includes orders that have a shipment created prior to the order' do
-      order.shipments.first.update_attributes!(created_at: order.created_at - 1.day)
+      order.shipments.first.update!(created_at: order.created_at - 1.day)
       expect(subject).to include order
     end
 

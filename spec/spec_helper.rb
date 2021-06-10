@@ -16,10 +16,13 @@ require 'timecop'
 # in spec/support/ and its subdirectories.
 Dir[File.join(File.dirname(__FILE__), 'support/**/*.rb')].each { |f| require f }
 
-# Requires factories defined in lib/solidus_expedited_exchanges/factories.rb
-require 'solidus_expedited_exchanges/factories'
+# Will load Solidus core factory first and then the ones
+# defined in `lib/solidus_expedited_exchanges/testing_support/factories.rb`.
+# and `lib/solidus_expedited_exchanges/testing_support/factories`.
+SolidusDevSupport::TestingSupport::Factories.load_for(SolidusExpeditedExchanges::Engine)
 
 RSpec.configure do |config|
+  config.include(ActiveSupport::Testing::Assertions)
   config.infer_spec_type_from_file_location!
   config.use_transactional_fixtures = false
 end

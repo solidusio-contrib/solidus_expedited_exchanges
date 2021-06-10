@@ -36,7 +36,7 @@ describe "exchanges:charge_unreturned_items" do
   end
 
   context "there are return items in an intermediate return status" do
-    let!(:order) { create(:shipped_order, line_items_count: 2) }
+    let!(:order) { create(:shipped_order, line_items_count: 2, created_by: create(:admin_user)) }
     let(:return_item_1) { build(:exchange_return_item, inventory_unit: order.inventory_units.first) }
     let(:return_item_2) { build(:exchange_return_item, inventory_unit: order.inventory_units.last) }
     let!(:rma) { create(:return_authorization, order: order, return_items: [return_item_1, return_item_2]) }
@@ -61,7 +61,7 @@ describe "exchanges:charge_unreturned_items" do
   end
 
   context "there are unreturned items" do
-    let!(:order) { create(:shipped_order, line_items_count: 2) }
+    let!(:order) { create(:shipped_order, line_items_count: 2, created_by: create(:admin_user)) }
     let(:return_item_1) { build(:exchange_return_item, inventory_unit: order.inventory_units.first) }
     let(:return_item_2) { build(:exchange_return_item, inventory_unit: order.inventory_units.last) }
     let!(:rma) { create(:return_authorization, order: order, return_items: [return_item_1, return_item_2]) }
@@ -184,10 +184,12 @@ describe "exchanges:charge_unreturned_items" do
       end
 
       context "there is no card from the previous order" do
-        let!(:credit_card) { create(:credit_card, user: order.user, default: true, gateway_customer_profile_id: "BGS-123") }
+        let!(:credit_card) { create(:credit_card, user: order.user, gateway_customer_profile_id: "BGS-123") }
+        let(:user) { order.user }
         before { allow_any_instance_of(Spree::Order).to receive(:valid_credit_cards) { [] } }
 
         it "attempts to use the user's default card" do
+          user.wallet.default_wallet_payment_source = user.wallet.add(credit_card)
           expect { subject.invoke }.to change { Spree::Payment.count }.by(1)
           new_order = Spree::Order.last
           expect(new_order.credit_cards).to be_present

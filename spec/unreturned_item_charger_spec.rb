@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe SolidusExpeditedExchanges::UnreturnedItemCharger do
   let(:ship_address) { create(:address) }
-  let(:shipped_order) { create(:shipped_order, ship_address: ship_address, line_items_count: 1, with_cartons: false) }
+  let(:shipped_order) { create(:shipped_order, ship_address: ship_address, line_items_count: 1, with_cartons: false, created_by: create(:admin_user)) }
   let(:original_shipment) { shipped_order.shipments.first }
   let(:original_stock_location) { original_shipment.stock_location }
   let(:original_inventory_unit) { shipped_order.inventory_units.first }
@@ -57,7 +57,7 @@ describe SolidusExpeditedExchanges::UnreturnedItemCharger do
 
       it "applies tax" do
         exchange_order = exchange_shipment.order
-        exchange_order.update!
+        exchange_order.recalculate
         subject
         expect(new_order.additional_tax_total).to be > 0
         expect(new_order.line_items[0].additional_tax_total).to be > 0
@@ -98,7 +98,7 @@ describe SolidusExpeditedExchanges::UnreturnedItemCharger do
 
   describe "#charge_for_items" do
     before do
-      original_variant.update_attributes!(track_inventory: true)
+      original_variant.update!(track_inventory: true)
       original_variant.stock_items.update_all(backorderable: false)
     end
 
@@ -106,7 +106,7 @@ describe SolidusExpeditedExchanges::UnreturnedItemCharger do
 
     context "new order is not an unreturned exchange" do
       before do
-        allow_any_instance_of(Spree::Shipment).to receive(:update_attributes!)
+        allow_any_instance_of(Spree::Shipment).to receive(:update!)
       end
 
       it "raises an error" do

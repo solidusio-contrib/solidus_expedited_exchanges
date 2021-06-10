@@ -26,7 +26,7 @@ module SolidusExpeditedExchanges
       add_exchange_variants_to_order
       set_shipment_for_new_order
 
-      new_order.update!
+      new_order.recalculate
       set_order_payment
 
       # There are several checks in the order state machine to skip
@@ -42,7 +42,8 @@ module SolidusExpeditedExchanges
 
       new_order.contents.approve(name: self.class.name)
       new_order.complete!
-      Spree::OrderCapturing.new(new_order).capture_payments if Spree::Config[:auto_capture_exchanges] && !Spree::Config[:auto_capture]
+      SolidusExpeditedExchanges::OrderCapturing.new(new_order).
+      capture_payments if Spree::Config[:auto_capture_exchanges] && !Spree::Config[:auto_capture]
 
       @return_items.each(&:expired!)
       create_new_rma if Spree::Config[:create_rma_for_unreturned_exchange]
@@ -71,20 +72,20 @@ module SolidusExpeditedExchanges
             new_inventory_unit_attributes[:order_id] = new_order.id
           end
 
-          i.update_attributes!(new_inventory_unit_attributes)
+          i.update!(new_inventory_unit_attributes)
         end
       end
     end
 
     def set_shipment_for_new_order
-      @shipment.update_attributes!(order_id: new_order.id)
+      @shipment.update!(order_id: new_order.id)
       new_order.shipments.reset
     end
 
     def set_order_payment
       unless new_order.payments.present?
         card_to_reuse = @original_order.valid_credit_cards.first
-        card_to_reuse = @original_order.user.credit_cards.default.first if !card_to_reuse && @original_order.user
+        card_to_reuse ||= @original_order.user.wallet.default_wallet_payment_source.payment_source if @original_order.user
         new_order.payments.create!(
           payment_method_id: card_to_reuse.try(:payment_method_id),
           source: card_to_reuse,
